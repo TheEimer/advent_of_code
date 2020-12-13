@@ -1,5 +1,4 @@
-data = []
-with open("/home/eimer/Dokumente/advent_of_code_2020/data_4.txt", "r") as fp:
+with open("data/data_4.txt", "r") as fp:
     data = fp.readlines()
 
 passports = {}
@@ -23,6 +22,13 @@ valid = 0
 features = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 for k in passports.keys():
     if all(f in passports[k].keys() for f in features):
+        valid += 1
+print(f"Part 1: {valid}")
+
+valid = 0
+features = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
+for k in passports.keys():
+    if all(f in passports[k].keys() for f in features):
         conditions = []
         conditions.append(int(passports[k]["byr"]) <= 2020 and int(passports[k]["byr"]) >= 1920)
         conditions.append(int(passports[k]["iyr"]) <= 2020 and int(passports[k]["iyr"]) >= 2010)
@@ -37,4 +43,5 @@ for k in passports.keys():
 
         if all(conditions):
             valid += 1
-print(valid)
+print(f"Part 2: {valid}")
+

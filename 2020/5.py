@@ -1,5 +1,4 @@
-data = []
-with open("/home/eimer/Dokumente/advent_of_code_2020/data_5.txt", "r") as fp:
+with open("data/data_5.txt", "r") as fp:
     data = fp.readlines()
 
 ids = []
@@ -22,13 +21,13 @@ for i in range(len(data)):
     seat_id = 8*min_row + min_col
     ids.append(seat_id)
 
-missing_seats = []
+print(f"Part 1: {max(ids)}")
 
+missing_seats = []
 for i in range(128*8):
     if i not in ids:
         row = i//8
         col = i%8
         if row > 7 and row < 117:
             missing_seats.append([row, col])
-print(missing_seats)
-print(missing_seats[0][0]*8 + missing_seats[0][1])
+print(f"Part 2: {missing_seats[0][0]*8 + missing_seats[0][1]}")
