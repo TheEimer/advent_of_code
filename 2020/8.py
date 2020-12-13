@@ -12,24 +12,29 @@ def is_loop():
             cur += 1
     return True
 
+def run(program):
+    step = 0
+    accumulator = 0
+    visited_steps = []
+    done = False
+    while not step in visited_steps and not done:
+        line = program[step].strip()
+        visited_steps.append(step)
+        if "acc" in line:
+            accumulator += int(line.split(" ")[1])
+            step += 1
+        elif "jmp" in line:
+            step += int(line.split(" ")[1])
+        else:
+            step += 1
+        if step >= len(program):
+            done = True
+    return  accumulator
 
 with open("data/data_8.txt", "r") as fp:
     data = fp.readlines()
 
-step = 0
-accumulator = 0
-visited_steps = []
-while not step in visited_steps:
-    line = data[step].strip()
-    visited_steps.append(step)
-    if "acc" in line:
-        accumulator += int(line.split(" ")[1])
-        step += 1
-    elif "jmp" in line:
-        step += int(line.split(" ")[1])
-    else:
-        step += 1
-print(f"Part 1: {accumulator}")
+print(f"Part 1: {run(data)}")
 
 for i in range(len(data)):
     line = data[i].strip()
@@ -46,18 +51,4 @@ for i in range(len(data)):
         else:
             break
 
-accumulator = 0
-done = False
-step = 0
-while not done:
-    line = data[step].strip()
-    if "jmp" in line:
-        step += int(line.split(" ")[1])
-    elif "acc" in line:
-        accumulator += int(line.split(" ")[1])
-        step += 1
-    else:
-        step += 1
-    if step >= len(data):
-        done = True
-print(f"Part 2: {accumulator}")
+print(f"Part 2: {run(data)}")

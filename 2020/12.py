@@ -1,34 +1,28 @@
 with open("data/data_12.txt", "r") as fp:
     data = fp.readlines()
 
-east = 0
-north = 0
-direction_degrees = 0
+directions = {"N": (0, 1), "S": (0, -1), "E": (1, 0), "W": (-1, 0)}
+changes = {"N": ("W", "E"), "S": ("E", "W"), "E": ("N", "S"), "W": ("S", "N")}
+
+position = [0, 0]
+direction = "E"
 data = [d.strip() for d in data]
 data = [[d[0], int(d[1:])] for d in data]
 for d in data:
-    if d[0] == "N":
-        north += d[1]
-    elif d[0] == "S":
-        north -= d[1]
-    elif d[0] == "E":
-        east += d[1]
-    elif d[0] == "W":
-        east -= d[1]
+    if d[0] in directions.keys():
+        position[0] += directions[d[0]][0] * d[1]
+        position[1] += directions[d[0]][1] * d[1]
     elif d[0] == "L":
-        direction_degrees = (direction_degrees - d[1])%360
+        for i in range(d[1]//90):
+            direction = changes[direction][0]
     elif d[0] == "R":
-        direction_degrees = (direction_degrees + d[1])%360
+        for i in range(d[1]//90):
+            direction = changes[direction][1]
     elif d[0] == "F":
-        if direction_degrees == 0:
-            east += d[1]
-        elif direction_degrees == 90:
-            north -= d[1]
-        elif direction_degrees == 180:
-            east -= d[1]
-        elif direction_degrees == 270:
-            north += d[1]
-print(f"Part 1: {abs(east)+abs(north)}")
+        position[0] += directions[direction][0] * d[1]
+        position[1] += directions[direction][1] * d[1]
+
+print(f"Part 1: {abs(position[0])+abs(position[1])}")
 
 def turn_right(w):
     if w[0] < 0:
@@ -51,14 +45,9 @@ def turn_left(w):
 waypoint = [10, 1]
 position = [0, 0]
 for d in data:
-    if d[0] == "N":
-        waypoint[1] += d[1]
-    elif d[0] == "S":
-        waypoint[1] -= d[1]
-    elif d[0] == "E":
-        waypoint[0] += d[1]
-    elif d[0] == "W":
-        waypoint[0] -= d[1]
+    if d[0] in directions.keys():
+        waypoint[0] += directions[d[0]][0] * d[1]
+        waypoint[1] += directions[d[0]][1] * d[1]
     elif d[0] == "L":
         for _ in range(d[1]//90):
             waypoint = turn_left(waypoint)
